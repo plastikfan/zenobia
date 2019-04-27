@@ -39,6 +39,12 @@
     "url": "https://github.com/plastikfan/zenobia/issues"
   },
   "homepage": "https://github.com/plastikfan/zenobia#readme",
+  "dependencies": {
+    "jaxine": "^1.0.2",
+    "ramda": "^0.26.1",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27"
+  },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
