@@ -8,8 +8,8 @@
   const DOMParser = require('xmldom').DOMParser;
   const parser = new DOMParser();
 
-  const XHelpers = require('../../../lib/utils/xml/selection-utilities');
-  const Helpers = require('../../test-helpers');
+  const XHelpers = require('../../helpers/xml-test-helpers');
+  const Helpers = require('../../helpers/test-helpers');
   const Builder = require('../../../lib/cli/builders/command-builder');
 
   const optionsMap = {
