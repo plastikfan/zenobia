@@ -200,16 +200,7 @@
       });
     }); // evaluate
 
-    //  *    - expressionName is falsey
-    //  *    - id missing from options
-    //  *    - no Expression for the expressionName specified
-    //  *    - Expression element has not child Pattern elements defined
-    //  *    - Expression contain both local text and a link attribute
-    //  *    - Circular reference detected via link attribute
-    //  *    - Expression does not contain either local text or a link attribute
-    //  *    - Regular expression built is not valid
-
-    context('evaluate errors', () => {
+    context('evaluate (error handling)', () => {
       const tests = [
         {
           given: 'evaluate invoked with empty expression name',
@@ -237,22 +228,22 @@
           expressionName: undefined,
           expectedRegexText: 'THIS IS A REG EX'
         },
-        // {
-        //   given: 'evaluate invoked with options without an "id"',
-        //   data: `<?xml version="1.0"?>
-        //     <Application name="pez">
-        //       <Expressions name="test-expressions">
-        //         <Expression name="forename-expression" eg="Ted">
-        //           <Pattern><![CDATA[THIS IS A REG EX]]></Pattern>
-        //         </Expression>
-        //       </Expressions>
-        //     </Application>`,
-        //   expressionName: '',
-        //   expectedRegexText: 'THIS IS A REG EX',
-        //   getOptions: (el) => ({ description: 'missing id' })
-        // },
         {
-          given: 'evaluate invoked with undefined expression name',
+          given: 'evaluate invoked with options without an "id"',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern><![CDATA[THIS IS A REG EX]]></Pattern>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: '',
+          expectedRegexText: 'THIS IS A REG EX',
+          options: { description: 'missing id' }
+        },
+        {
+          given: 'evaluate invoked with an expression name that is undefined',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions name="test-expressions">
@@ -263,6 +254,93 @@
             </Application>`,
           expressionName: 'this-expression-does-not-exist',
           expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'evaluate invoked with empty expression name',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'Pattern contains both local text and a link attribute',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern link="surname-expression"><![CDATA[THIS IS A REG EX]]></Pattern>
+                </Expression>
+                <Expression name="surname-expression" eg="Ted">
+                  <Pattern><![CDATA[THIS IS A REG EX]]></Pattern>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'Circular reference Pattern links to itself',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern link="forename-expression"/>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'Circular reference detected via link attribute',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern link="middle-expression"/>
+                  <Pattern><![CDATA[THIS IS A REG EX]]></Pattern>
+                </Expression>
+                <Expression name="middle-expression" eg="Ted">
+                  <Pattern link="surname-expression"/>
+                </Expression>
+                <Expression name="surname-expression" eg="Ted">
+                  <Pattern link="forename-expression"/>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'Pattern does not contain either local text or a link attribute',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern/>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: 'THIS IS A REG EX'
+        },
+        {
+          given: 'Regular expression built is not valid',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="test-expressions">
+                <Expression name="forename-expression" eg="Ted">
+                  <Pattern><![CDATA[((((]]></Pattern>
+                </Expression>
+              </Expressions>
+            </Application>`,
+          expressionName: 'forename-expression',
+          expectedRegexText: '(((('
         }
       ];
 
@@ -273,11 +351,11 @@
             const applicationNode = XHelpers.selectFirst('/Application', document);
 
             if (applicationNode) {
-              // const getOptions = R.has('getOptions', t) ? t.getOptions : getTestOptions;
               let expressions = Builder.buildExpressions(applicationNode, getTestOptions);
 
               expect(() => {
-                Impl.evaluate(t.expressionName, expressions, getTestOptions('Expression'));
+                const options = R.has('options', t) ? t.options : getTestOptions('Expression');
+                Impl.evaluate(t.expressionName, expressions, options);
               }).to.throw();
             } else {
               assert.fail('Couldn\'t get Application node.');
@@ -285,6 +363,6 @@
           });
         });
       });
-    }); // evaluate errors
+    }); // evaluate (error handling)
   }); // Expression Builder
 })();
