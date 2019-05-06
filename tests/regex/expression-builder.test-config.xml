@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<Application name="pez">
+<Application name="pez" comment="regex101.com is your friend">
   <Expressions name="field-type-expressions">
     <Expression name="person's-name-expression" eg="Ted O'Neill">
       <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
@@ -58,16 +58,16 @@
     <Expression name="common-album-expression">
       <Pattern eg="MOVIE"><![CDATA[(?:MOVIE)?]]></Pattern>
       <Pattern eg=" - " link="spaced-dash-expression"/>
-      <Pattern groups="primaryname"><![CDATA[(?<primaryname>]]></Pattern>
+      <Pattern><![CDATA[(?<primaryname>]]></Pattern>
       <Pattern eg="Neo Trinity" link="person's-name-expression"/>
       <Pattern><![CDATA[)]]></Pattern>
       <Pattern><![CDATA[(?:\(]]></Pattern>
-      <Pattern groups="akaname"><![CDATA[(?<akaname>]]></Pattern>
+      <Pattern><![CDATA[(?<akaname>]]></Pattern>
       <Pattern link="person's-name-expression"/>
       <Pattern><![CDATA[)]]></Pattern>
       <Pattern><![CDATA[\))?]]></Pattern>
       <Pattern eg=" - " link="spaced-dash-expression"/>
-      <Pattern groups="header"><![CDATA[(?:(?<header>]]></Pattern>
+      <Pattern><![CDATA[(?:(?<header>]]></Pattern>
       <Pattern eg="Sentinels" link="alpha-num-expression"/>
       <Pattern eg=", "><![CDATA[,\s*)?]]></Pattern>
       <Pattern><![CDATA[(?<prefix>]]></Pattern>
@@ -79,30 +79,34 @@
       <Pattern><![CDATA[)]]></Pattern>
       <Pattern eg=" - " link="spaced-dash-expression"/>
       <Pattern><![CDATA[)?]]></Pattern>
-      <Pattern groups="galleryname"><![CDATA[(?<galleryname>]]></Pattern>
+      <Pattern><![CDATA[(?<galleryname>]]></Pattern>
       <Pattern eg="The One That Got Away" link="album's-name-expression"/>
       <Pattern><![CDATA[)]]></Pattern>
+      <Pattern eg="~ Alice &amp; Bob &amp; Carol &amp; Dana" link="members-expression" />
+      <Pattern><![CDATA[$]]></Pattern>
+    </Expression>
 
+    <Expression name="members-expression">
       <Pattern><![CDATA[(?:]]></Pattern>
       <Pattern eg=" ~ " link="spaced-dash-tilde-expression"/>
-      <Pattern groups="member1"><![CDATA[(?<member1>]]></Pattern>
+      <Pattern><![CDATA[(?<member1>]]></Pattern>
       <Pattern eg="" link="person's-name-expression"/>
       <Pattern><![CDATA[)(?:\s*&\s*]]></Pattern>
-      <Pattern groups="member2"><![CDATA[(?<member2>]]></Pattern>
+      <Pattern><![CDATA[(?<member2>]]></Pattern>
       <Pattern eg="" link="person's-name-expression"/>
       <Pattern><![CDATA[)(?:\s*&\s*]]></Pattern>
-      <Pattern groups="member3"><![CDATA[(?<member3>]]></Pattern>
+      <Pattern><![CDATA[(?<member3>]]></Pattern>
       <Pattern eg="" link="person's-name-expression"/>
       <Pattern><![CDATA[)(?:\s*&\s*]]></Pattern>
-      <Pattern groups="member4"><![CDATA[(?<member4>]]></Pattern>
+      <Pattern><![CDATA[(?<member4>]]></Pattern>
       <Pattern eg="" link="person's-name-expression"/>
-      <Pattern><![CDATA[)?)?$]]></Pattern>
+      <Pattern><![CDATA[)?)?)?)?)?]]></Pattern>
     </Expression>
   </Expressions>
 
   <Expressions name="date-expressions">
     <Expression name="iso-date-expression" eg="2016-06-23">
-      <Pattern groups="year,mm,dd" ><![CDATA[(?<year>\d{4})-(?<mm>\d{2})-(?<dd>\d{2})\d]]></Pattern>
+      <Pattern><![CDATA[(?<year>\d{4})-(?<mm>\d{2})-(?<dd>\d{2})\d]]></Pattern>
     </Expression>
 
     <Expression name="missing-date-expression">
@@ -214,7 +218,7 @@
   <Expressions name="content-expressions">
     <Expression name="meta-salutation-expression">
       <Pattern eg="_"><![CDATA[^_?]]></Pattern>
-      <Pattern eg="cover" csv="meta-csv"/>
+      <Pattern eg="cover" csv="meta-csv"><![CDATA[cover|clean]]></Pattern>
       <Pattern eg="."><![CDATA[\.]]></Pattern>
       <Pattern eg="movie."><![CDATA[(movie.)?]]></Pattern>
     </Expression>
