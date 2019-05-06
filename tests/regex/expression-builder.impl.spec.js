@@ -190,8 +190,6 @@
                 const namedGroups = R.prop('$namedGroups')(expression);
                 expect(namedGroups, `Failed to extract named capture groups successfully`).to.deep.equal(t.expectedCaptureGroups);
               }
-
-              console.log(`RESULT: ${JSON.stringify(expression)}`);
             } else {
               assert.fail('Couldn\'t get Application node.');
             }
