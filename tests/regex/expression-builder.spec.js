@@ -112,33 +112,5 @@
         });
       });
     }); // Expression
-
-    context('given: id missing from option', () => {
-      it('should throw', () => {
-        const data = `<?xml version="1.0"?>
-          <Application name="pez">
-            <Expressions name="field-type-expressions">
-              <Expression name="person's-name-expression" eg="Ted O'Neill">
-                <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
-              </Expression>
-            </Expressions>
-          </Application>`;
-
-        const document = parser.parseFromString(data);
-        const applicationNode = XHelpers.selectFirst('/Application', document);
-
-        if (applicationNode) {
-          expect(() => {
-            Builder.buildExpressions(applicationNode, (el) => {
-              return {
-                description: 'missing id'
-              };
-            });
-          }).to.throw();
-        } else {
-          assert.fail('Couldn\'t get Application node.');
-        }
-      });
-    });
   }); // Expression builder
 })();

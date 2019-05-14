@@ -12,16 +12,6 @@
   const Helpers = require('../../helpers/test-helpers');
   const Builder = require('../../../lib/cli/builders/command-builder');
 
-  const optionsMap = {
-    'DEFAULT': { id: 'name' },
-    'Command': { id: 'name', recurse: 'inherits', discards: ['inherits', 'abstract'] },
-    'Tree': { id: 'alias' }
-  };
-
-  const getTestOptions = (el) => {
-    return R.includes(el, R.keys(optionsMap)) ? optionsMap[el] : optionsMap['DEFAULT'];
-  };
-
   const ComplexNormalisedArgumentDefs = {
     '_': 'ArgumentDefs',
     '_children': {
@@ -354,7 +344,7 @@
       const commandsNode = XHelpers.selectFirst('/Application/Cli/Commands', document);
 
       if (commandsNode) {
-        const commands = Builder.buildNamedCommand('rename', commandsNode, getTestOptions);
+        const commands = Builder.buildNamedCommand('rename', commandsNode);
         const renameCommand = commands[0];
 
         it('should: build a single command', () => {
@@ -398,7 +388,7 @@
 
         if (commandsNode) {
           expect(() => {
-            Builder.buildNamedCommand('unicorns', commandsNode, getTestOptions);
+            Builder.buildNamedCommand('unicorns', commandsNode);
           }).to.throw();
         } else {
           assert.fail('Couldn\'t get Commands node.');
@@ -468,7 +458,7 @@
       const commandsNode = XHelpers.selectFirst('/Application/Cli/Commands', document);
 
       if (commandsNode) {
-        const commands = Builder.buildCommands(commandsNode, getTestOptions);
+        const commands = Builder.buildCommands(commandsNode);
 
         const renameCommand = commands[0];
         // console.log(`===> normalised rename COMMAND: ${JSON.stringify(renameCommand)}`);
@@ -546,7 +536,7 @@
 
         if (commandsNode) {
           expect(() => {
-            Builder.buildCommands(commandsNode, getTestOptions);
+            Builder.buildCommands(commandsNode);
           }).to.throw(Error);
         } else {
           assert.fail('Couldn\'t get Commands node.');
@@ -622,7 +612,7 @@
       const commandsNode = XHelpers.selectFirst('/Application/Cli/Commands', document);
 
       if (commandsNode) {
-        const commands = Builder.buildCommands(commandsNode, getTestOptions);
+        const commands = Builder.buildCommands(commandsNode);
         const normalisedCommands = Builder.normaliseCommands(commands, {
           commandArguments: ComplexNormalisedArgumentDefs
         });
@@ -732,7 +722,7 @@
     if (commandsNode) {
       context('given: a rename command, inherits from 3 commands, ArgumentRefs and ArgumentGroups', () => {
         it('should: return an object with children constituents normalised.', () => {
-          const commands = Builder.buildCommands(commandsNode, getTestOptions);
+          const commands = Builder.buildCommands(commandsNode);
 
           const normalisedCommands = Builder.normaliseCommands(commands, {
             commandArguments: ComplexNormalisedArgumentDefs
