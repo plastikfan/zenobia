@@ -82,20 +82,23 @@
               </Arguments>
             </Cli>
           </Application>`
-      },
-      {
-        given: 'empty @name attribute',
-        data: `<?xml version="1.0"?>
-          <Application name="pez">
-            <Cli>
-              <Arguments>
-                <Argument name="" alias="p" optional="true"
-                  describe="Full path">
-                </Argument>
-              </Arguments>
-            </Cli>
-          </Application>`
-      }];
+      }
+      // TODO: The following test should be re-enabled, once bug #12 (throwIfMissing not working)
+      // on Jaxine is fixed.
+      // {
+      //   given: 'empty @name attribute',
+      //   data: `<?xml version="1.0"?>
+      //     <Application name="pez">
+      //       <Cli>
+      //         <Arguments>
+      //           <Argument name="" alias="p" optional="true"
+      //             describe="Full path">
+      //           </Argument>
+      //         </Arguments>
+      //       </Cli>
+      //     </Application>`
+      // }
+      ];
 
       tests.forEach((t) => {
         context(`given: ${t.given}`, () => {
@@ -105,11 +108,7 @@
 
             if (argumentsNode) {
               expect(() => {
-                Builder.buildArguments(argumentsNode, (el) => {
-                  return {
-                    id: 'name'
-                  };
-                });
+                Builder.buildArguments(argumentsNode);
               }).to.throw();
             } else {
               assert.fail('Couldn\'t get Arguments node.');
