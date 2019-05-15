@@ -21,21 +21,21 @@
       context('Error handling', () => { // Expression:
         // This test will need to be turned back on after throwIfCollision is enabled on Jaxine:
         //
-        // {
-        //   given: 'Expression defined within Expressions with duplicated entry',
-        //   data: `<?xml version="1.0"?>
-        //             <Application name="pez">
-        //               <Expressions name="field-type-expressions">
-        //                 <Expression name="person's-name-expression" eg="Ted O'Neill">
-        //                   <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
-        //                 </Expression>
-        //                 <Expression name="person's-name-expression" eg="Ted O'Neill">
-        //                   <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
-        //                 </Expression>
-        //               </Expressions>
-        //             </Application>`
-        // }
         const tests = [{
+          given: 'Expression defined within Expressions with duplicated entry',
+          data: `<?xml version="1.0"?>
+            <Application name="pez">
+              <Expressions name="field-type-expressions">
+                <Expression name="person's-name-expression" eg="Ted O'Neill">
+                  <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
+                </Expression>
+                <Expression name="person's-name-expression" eg="Ted O'Neill">
+                  <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
+                </Expression>
+              </Expressions>
+            </Application>`
+        },
+        {
           given: 'Expression defined within Expressions without @name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
