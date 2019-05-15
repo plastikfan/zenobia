@@ -10,17 +10,9 @@
   const XHelpers = require('../helpers/xml-test-helpers');
   const Builder = require('../../lib/regex/expression-builder');
 
-  const getTestOptions = (el) => {
-    return {
-      id: 'name'
-    };
-  };
-
   describe('Expression builder', () => {
     context('Expression', () => {
       context('Error handling', () => { // Expression:
-        // This test will need to be turned back on after throwIfCollision is enabled on Jaxine:
-        //
         const tests = [{
           given: 'Expression defined within Expressions with duplicated entry',
           data: `<?xml version="1.0"?>
@@ -59,7 +51,7 @@
         },
         // Expressions:
         {
-          given: 'Expression defined within Expressions with duplicated entry',
+          given: 'Multiple Expressions defined with same name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions name="field-type-expressions">
@@ -75,7 +67,7 @@
             </Application>`
         },
         {
-          given: 'Expression defined within Expressions without @name attribute',
+          given: 'Expressions defined without @name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions nametypo="field-type-expressions">
@@ -86,7 +78,7 @@
             </Application>`
         },
         {
-          given: 'Expression defined within Expressions with empty @name attribute',
+          given: 'Expressions defined with empty @name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions name="">
@@ -105,7 +97,7 @@
 
               if (applicationNode) {
                 expect(() => {
-                  Builder.buildExpressions(applicationNode, getTestOptions);
+                  Builder.buildExpressions(applicationNode);
                 }).to.throw();
               } else {
                 assert.fail('Couldn\'t get Application node.');
