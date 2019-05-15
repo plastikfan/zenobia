@@ -28,11 +28,7 @@
         const argumentsNode = XHelpers.selectFirst('/Application/Cli/Arguments', document);
 
         if (argumentsNode) {
-          const argumentDefs = Builder.buildArguments(argumentsNode, (el) => {
-            return {
-              id: 'name'
-            };
-          });
+          const argumentDefs = Builder.buildArguments(argumentsNode);
 
           if (argumentDefs) {
             const directorArg = R.path(['_children', 'director'])(argumentDefs);
