@@ -11,12 +11,6 @@
   const Builder = require('../../lib/regex/expression-builder');
   const Impl = require('../../lib/regex/expression-builder.impl');
 
-  const getTestOptions = (el) => {
-    return {
-      id: 'name'
-    };
-  };
-
   describe('Expression Builder', () => {
     context('evaluate', () => {
       const tests = [{
@@ -175,9 +169,9 @@
             const applicationNode = XHelpers.selectFirst('/Application', document);
 
             if (applicationNode) {
-              let expressions = Builder.buildExpressions(applicationNode, getTestOptions);
+              let expressions = Builder.buildExpressions(applicationNode);
 
-              const expression = Impl.evaluate(t.expressionName, expressions, getTestOptions('Expression'));
+              const expression = Impl.evaluate(t.expressionName, expressions);
               const expressionObject = R.prop('$regexp')(expression);
               expect(expressionObject.source).to.equal(t.expectedRegexText);
 
@@ -349,10 +343,15 @@
             const applicationNode = XHelpers.selectFirst('/Application', document);
 
             if (applicationNode) {
-              let expressions = Builder.buildExpressions(applicationNode, getTestOptions);
+              let expressions = Builder.buildExpressions(applicationNode);
+              const getEvaluateOptions = (el) => {
+                return {
+                  id: 'name'
+                };
+              };
 
               expect(() => {
-                const options = R.has('options', t) ? t.options : getTestOptions('Expression');
+                const options = R.has('options', t) ? t.options : getEvaluateOptions('Expression');
                 Impl.evaluate(t.expressionName, expressions, options);
               }).to.throw();
             } else {

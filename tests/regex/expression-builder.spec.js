@@ -10,12 +10,6 @@
   const XHelpers = require('../helpers/xml-test-helpers');
   const Builder = require('../../lib/regex/expression-builder');
 
-  const getTestOptions = (el) => {
-    return {
-      id: 'name'
-    };
-  };
-
   describe('Expression builder', () => {
     context('Expression', () => {
       context('Error handling', () => { // Expression:
@@ -57,7 +51,7 @@
         },
         // Expressions:
         {
-          given: 'Expression defined within Expressions with duplicated entry',
+          given: 'Multiple Expressions defined with same name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions name="field-type-expressions">
@@ -73,7 +67,7 @@
             </Application>`
         },
         {
-          given: 'Expression defined within Expressions without @name attribute',
+          given: 'Expressions defined without @name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions nametypo="field-type-expressions">
@@ -84,7 +78,7 @@
             </Application>`
         },
         {
-          given: 'Expression defined within Expressions with empty @name attribute',
+          given: 'Expressions defined with empty @name attribute',
           data: `<?xml version="1.0"?>
             <Application name="pez">
               <Expressions name="">
@@ -94,6 +88,7 @@
               </Expressions>
             </Application>`
         }];
+
         tests.forEach((t) => {
           context(`given: ${t.given}`, () => {
             it('should: throw', () => {
@@ -102,7 +97,7 @@
 
               if (applicationNode) {
                 expect(() => {
-                  Builder.buildExpressions(applicationNode, getTestOptions);
+                  Builder.buildExpressions(applicationNode);
                 }).to.throw();
               } else {
                 assert.fail('Couldn\'t get Application node.');
@@ -112,33 +107,5 @@
         });
       });
     }); // Expression
-
-    context('given: id missing from option', () => {
-      it('should throw', () => {
-        const data = `<?xml version="1.0"?>
-          <Application name="pez">
-            <Expressions name="field-type-expressions">
-              <Expression name="person's-name-expression" eg="Ted O'Neill">
-                <Pattern><![CDATA[[a-zA-Z\s']+]]></Pattern>
-              </Expression>
-            </Expressions>
-          </Application>`;
-
-        const document = parser.parseFromString(data);
-        const applicationNode = XHelpers.selectFirst('/Application', document);
-
-        if (applicationNode) {
-          expect(() => {
-            Builder.buildExpressions(applicationNode, (el) => {
-              return {
-                description: 'missing id'
-              };
-            });
-          }).to.throw();
-        } else {
-          assert.fail('Couldn\'t get Application node.');
-        }
-      });
-    });
   }); // Expression builder
 })();
