@@ -1,45 +1,55 @@
+
 const path = require('path');
 const webpack = require('webpack');
-const { getIfUtils, removeEmpty } = require('webpack-config-utils');
+const { getIfUtils } = require('webpack-config-utils');
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = (env) => {
   const {
-    ifProduction,
-    ifNotTest,
-    ifTest
+    ifProduction
   } = getIfUtils(env);
 
   const mode = ifProduction('production', 'development');
   console.log('>>> Zenobia Webpack Environment mode: ' + env.mode);
 
   return {
-    mode: mode,
-    entry: removeEmpty([
-      ifNotTest('./index.js'),
-      ifTest('./tests/all-tests-entry.js')
-    ]),
-    module: {
-      rules: [{
-        test: /index.js/,
-        use: 'shebang-loader'
-      }]
+    devtool: 'source-map',
+    entry: {
+      index: './lib/index.ts'
     },
-    plugins: removeEmpty([
-      ifNotTest(new webpack.BannerPlugin({
+    target: 'node',
+    mode: mode,
+    externals: [nodeExternals()],
+    module: {
+      rules: [
+        {
+          test: /\.ts(x?)$/,
+          use: 'ts-loader'
+        },
+        {
+          test: /\.json$/,
+          use: 'json-loader'
+        }
+      ]
+    },
+    plugins: [
+      new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
+      new webpack.BannerPlugin({
         banner: '#!/usr/bin/env node',
         raw: true
-      }))
-    ]),
-    externals: [nodeExternals()],
-    output: removeEmpty(
-      ifNotTest({
-        filename: 'zenobia-bundle.js',
-        path: path.resolve(__dirname, 'dist')
-      }),
-      ifTest({
-        filename: 'zenobia-test-bundle.js',
-        path: path.resolve(__dirname, 'dist')
-      }))
+      })
+    ],
+    resolve: {
+      extensions: ['.ts', '.js', '.json']
+    },
+    watchOptions: {
+      ignored: /node_modules/
+    },
+    output: {
+      filename: 'zenobia-bundle.js',
+      sourceMapFilename: 'zenobia-bundle.js.map',
+      path: path.join(__dirname, 'dist'),
+      libraryTarget: 'commonjs'
+    }
   };
 };
