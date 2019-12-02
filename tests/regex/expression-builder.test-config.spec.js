@@ -25,7 +25,7 @@ import datum from './expression-builder.test-config.xml';
       it('should: return a map object with loaded expressions"', () => {
         const applicationNode = XHelpers.selectFirst('/Application', document);
         if (applicationNode) {
-          let expressions = Builder.buildExpressions(applicationNode, getTestOptions);
+          const expressions = Builder.buildExpressions(applicationNode, getTestOptions);
 
           const keys = R.keys(expressions);
           expect(keys.length).to.equal(34);
@@ -42,12 +42,12 @@ import datum from './expression-builder.test-config.xml';
       it('should: evaluate all built expressions"', () => {
         const applicationNode = XHelpers.selectFirst('/Application', document);
         if (applicationNode) {
-          let expressions = Builder.buildExpressions(applicationNode, getTestOptions);
+          const expressions = Builder.buildExpressions(applicationNode, getTestOptions);
 
           R.forEach((expressionName) => {
             const expression = Impl.evaluate(expressionName, expressions, options);
 
-            const regexpObj = expression['$regexp'];
+            const regexpObj = expression.$regexp;
             expect(regexpObj).to.be.a('regexp');
 
             const source = regexpObj.source;

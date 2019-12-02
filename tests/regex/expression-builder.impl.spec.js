@@ -169,7 +169,7 @@
             const applicationNode = XHelpers.selectFirst('/Application', document);
 
             if (applicationNode) {
-              let expressions = Builder.buildExpressions(applicationNode);
+              const expressions = Builder.buildExpressions(applicationNode);
 
               const expression = Impl.evaluate(t.expressionName, expressions);
               const expressionObject = R.prop('$regexp')(expression);
@@ -177,12 +177,12 @@
 
               if (R.has('expectedEgText', t)) {
                 const egText = R.prop('$eg')(expression);
-                expect(egText, `Failed to extract "eg" text successfully`).to.equal(t.expectedEgText);
+                expect(egText, 'Failed to extract "eg" text successfully').to.equal(t.expectedEgText);
               }
 
               if (R.has('expectedCaptureGroups', t)) {
                 const namedGroups = R.prop('$namedGroups')(expression);
-                expect(namedGroups, `Failed to extract named capture groups successfully`).to.deep.equal(t.expectedCaptureGroups);
+                expect(namedGroups, 'Failed to extract named capture groups successfully').to.deep.equal(t.expectedCaptureGroups);
               }
             } else {
               assert.fail('Couldn\'t get Application node.');
@@ -343,7 +343,7 @@
             const applicationNode = XHelpers.selectFirst('/Application', document);
 
             if (applicationNode) {
-              let expressions = Builder.buildExpressions(applicationNode);
+              const expressions = Builder.buildExpressions(applicationNode);
               const getEvaluateOptions = (el) => {
                 return {
                   id: 'name'
