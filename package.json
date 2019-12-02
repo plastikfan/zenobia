@@ -48,10 +48,10 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^8.3.3",
-    "@commitlint/config-conventional": "^7.6.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "chai": "^4.2.0",
     "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^2.1.0",
+    "cz-conventional-changelog": "^3.0.2",
     "depcheck": "^0.9.1",
     "dirty-chai": "^2.0.1",
     "mocha": "^6.2.2",
