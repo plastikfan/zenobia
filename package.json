@@ -52,7 +52,7 @@
     "chai": "^4.2.0",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^2.1.0",
-    "depcheck": "^0.8.0",
+    "depcheck": "^0.9.1",
     "dirty-chai": "^2.0.1",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
