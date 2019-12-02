@@ -19,14 +19,14 @@ import datum from './app.zenobia.argument-builder.test.config.xml';
         const argumentsNode = XHelpers.selectFirst('/Application/Cli/Arguments', document);
 
         if (argumentsNode) {
-          let argumentDefs = Builder.buildArguments(argumentsNode, (el) => {
+          const argumentDefs = Builder.buildArguments(argumentsNode, (el) => {
             return {
               id: 'name'
             };
           });
 
           if (argumentDefs) {
-            const result = R.keys(argumentDefs['_children']).length;
+            const result = R.keys(argumentDefs._children).length;
             expect(result).to.equal(33);
           }
         } else {

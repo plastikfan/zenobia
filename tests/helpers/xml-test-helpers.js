@@ -15,7 +15,7 @@ const xpath = require('xpath');
 // Typically, the elementName ('Expression') can be accessed by node.nodeName
 //
 function selectElementNodeById (elementName, id, name, parentNode) {
-  let elementResult = xpath.select(`.//${elementName}[@${id}="${name}"]`, parentNode) || {};
+  const elementResult = xpath.select(`.//${elementName}[@${id}="${name}"]`, parentNode) || {};
   let elementNode = {};
 
   if (elementResult && elementResult.length > 0) {

@@ -13,105 +13,105 @@
   const Builder = require('../../../lib/cli/builders/command-builder');
 
   const ComplexNormalisedArgumentDefs = {
-    '_': 'ArgumentDefs',
-    '_children': {
-      'name': {
-        'name': 'name',
-        'alias': 'n',
-        'optional': 'true',
-        'describe': 'Album name',
-        '_': 'Argument'
+    _: 'ArgumentDefs',
+    _children: {
+      name: {
+        name: 'name',
+        alias: 'n',
+        optional: 'true',
+        describe: 'Album name',
+        _: 'Argument'
       },
-      'incname': {
-        'name': 'incname',
-        'alias': 'in',
-        'optional': 'true',
-        'describe': 'Incorporation name',
-        '_': 'Argument'
+      incname: {
+        name: 'incname',
+        alias: 'in',
+        optional: 'true',
+        describe: 'Incorporation name',
+        _: 'Argument'
       },
-      'studioname': {
-        'name': 'studioname',
-        'alias': 'sn',
-        'optional': 'true',
-        'describe': 'Studio name',
-        '_': 'Argument'
+      studioname: {
+        name: 'studioname',
+        alias: 'sn',
+        optional: 'true',
+        describe: 'Studio name',
+        _: 'Argument'
       },
-      'labelname': {
-        'name': 'labelname',
-        'alias': 'ln',
-        'optional': 'true',
-        'describe': 'Record label name',
-        '_': 'Argument'
+      labelname: {
+        name: 'labelname',
+        alias: 'ln',
+        optional: 'true',
+        describe: 'Record label name',
+        _: 'Argument'
       },
-      'header': {
-        'name': 'header',
-        'alias': 'hdr',
-        'optional': 'true',
-        'describe': 'Header, has no influence on the naming of content.',
-        '_': 'Argument'
+      header: {
+        name: 'header',
+        alias: 'hdr',
+        optional: 'true',
+        describe: 'Header, has no influence on the naming of content.',
+        _: 'Argument'
       },
-      'producer': {
-        'name': 'producer',
-        'alias': 'pn',
-        'optional': 'true',
-        'describe': 'Producer name',
-        '_': 'Argument'
+      producer: {
+        name: 'producer',
+        alias: 'pn',
+        optional: 'true',
+        describe: 'Producer name',
+        _: 'Argument'
       },
-      'director': {
-        'name': 'director',
-        'alias': 'dn',
-        'optional': 'true',
-        'describe': 'Director name',
-        '_': 'Argument'
+      director: {
+        name: 'director',
+        alias: 'dn',
+        optional: 'true',
+        describe: 'Director name',
+        _: 'Argument'
       },
-      'filesys': {
-        'name': 'filesys',
-        'alias': 'fs',
-        'optional': 'true',
-        'describe': 'The file system as defined in config as FileSystem',
-        '_': 'Argument'
+      filesys: {
+        name: 'filesys',
+        alias: 'fs',
+        optional: 'true',
+        describe: 'The file system as defined in config as FileSystem',
+        _: 'Argument'
       },
-      'path': {
-        'name': 'path',
-        'alias': 'p',
-        'optional': 'true',
-        'describe': 'Full path.',
-        '_': 'Argument'
+      path: {
+        name: 'path',
+        alias: 'p',
+        optional: 'true',
+        describe: 'Full path.',
+        _: 'Argument'
       },
-      'tree': {
-        'name': 'tree',
-        'alias': 't',
-        'optional': 'true',
-        'describe': 'File system tree',
-        '_': 'Argument'
+      tree: {
+        name: 'tree',
+        alias: 't',
+        optional: 'true',
+        describe: 'File system tree',
+        _: 'Argument'
       },
-      'with': {
-        'name': 'with',
-        'alias': 'w',
-        'optional': 'true',
-        'describe': 'replace with',
-        '_': 'Argument'
+      with: {
+        name: 'with',
+        alias: 'w',
+        optional: 'true',
+        describe: 'replace with',
+        _: 'Argument'
       },
-      'put': {
-        'name': 'put',
-        'alias': 'pu',
-        'optional': 'true',
-        'describe': 'update existing',
-        '_': 'Argument'
+      put: {
+        name: 'put',
+        alias: 'pu',
+        optional: 'true',
+        describe: 'update existing',
+        _: 'Argument'
       },
-      'loglevel': {
-        'name': 'loglevel',
-        'alias': 'll',
-        'optional': 'true',
-        'describe': 'the logging level',
-        '_': 'Argument'
+      loglevel: {
+        name: 'loglevel',
+        alias: 'll',
+        optional: 'true',
+        describe: 'the logging level',
+        _: 'Argument'
       },
-      'logfile': {
-        'name': 'logfile',
-        'alias': 'lf',
-        'optional': 'true',
-        'describe': 'the file full path',
-        '_': 'Argument'
+      logfile: {
+        name: 'logfile',
+        alias: 'lf',
+        optional: 'true',
+        describe: 'the file full path',
+        _: 'Argument'
       }
     }
   };
@@ -120,21 +120,21 @@
     context('given: a pre-built single command', () => {
       it('should: normalise the single simple command with no inheritance', () => {
         const argumentDefs = {
-          'type': 'string',
-          '_': 'Arguments',
-          '_children': {
-            'with': {
-              'name': 'with',
-              'alias': 'wi',
-              'describe': 'New value.',
-              '_': 'Argument'
+          type: 'string',
+          _: 'Arguments',
+          _children: {
+            with: {
+              name: 'with',
+              alias: 'wi',
+              describe: 'New value.',
+              _: 'Argument'
             },
-            'put': {
-              'name': 'put',
-              'alias': 'pu',
-              'type': 'switch',
-              'describe': "Insert new field if it doesn't exist. (Like put http verb)  switch.",
-              '_': 'Argument'
+            put: {
+              name: 'put',
+              alias: 'pu',
+              type: 'switch',
+              describe: "Insert new field if it doesn't exist. (Like put http verb)  switch.",
+              _: 'Argument'
             }
           }
         };
@@ -142,17 +142,17 @@
         // Pre normalised state, _children is an array instead of a map/dictionary
         //
         const preNormalised = [{
-          'name': 'rename',
-          'describe': 'Rename albums according to arguments specified (write).',
-          '_': 'Command',
-          '_children': [{
-            '_': 'Arguments',
-            '_children': [{
-              'name': 'with',
-              '_': 'ArgumentRef'
+          name: 'rename',
+          describe: 'Rename albums according to arguments specified (write).',
+          _: 'Command',
+          _children: [{
+            _: 'Arguments',
+            _children: [{
+              name: 'with',
+              _: 'ArgumentRef'
             }, {
-              'name': 'put',
-              '_': 'ArgumentRef'
+              name: 'put',
+              _: 'ArgumentRef'
             }]
           }]
         }];
@@ -182,110 +182,110 @@
 
       it('should: normalise the single command with inheritance ok [COMPLEX]', () => {
         const preNormalised = [{ // RESULT OF Builder.buildNamedCommand
-          'name': 'rename',
-          'source': 'filesystem-source',
-          '_': 'Command',
-          '_children': [{
-            '_': 'Arguments',
-            '_children': [{
-              'name': 'with',
-              '_': 'ArgumentRef'
+          name: 'rename',
+          source: 'filesystem-source',
+          _: 'Command',
+          _children: [{
+            _: 'Arguments',
+            _children: [{
+              name: 'with',
+              _: 'ArgumentRef'
             }, {
-              'name': 'put',
-              '_': 'ArgumentRef'
+              name: 'put',
+              _: 'ArgumentRef'
             }]
           }, {
-            '_': 'Arguments',
-            '_children': [{
-              'name': 'loglevel',
-              '_': 'ArgumentRef'
+            _: 'Arguments',
+            _children: [{
+              name: 'loglevel',
+              _: 'ArgumentRef'
             }, {
-              'name': 'logfile',
-              '_': 'ArgumentRef'
+              name: 'logfile',
+              _: 'ArgumentRef'
             }]
           }, {
-            '_': 'ArgumentGroups',
-            '_children': [{
-              '_': 'Conflicts',
-              '_children': [{
-                'name': 'loglevel',
-                '_': 'ArgumentRef'
+            _: 'ArgumentGroups',
+            _children: [{
+              _: 'Conflicts',
+              _children: [{
+                name: 'loglevel',
+                _: 'ArgumentRef'
               }, {
-                'name': 'logfile',
-                '_': 'ArgumentRef'
+                name: 'logfile',
+                _: 'ArgumentRef'
               }]
             }]
           }, {
-            '_': 'Arguments',
-            '_children': [{
-              'name': 'name',
-              '_': 'ArgumentRef'
+            _: 'Arguments',
+            _children: [{
+              name: 'name',
+              _: 'ArgumentRef'
             }, {
-              'name': 'incname',
-              '_': 'ArgumentRef'
+              name: 'incname',
+              _: 'ArgumentRef'
             }, {
-              'name': 'studioname',
-              '_': 'ArgumentRef'
+              name: 'studioname',
+              _: 'ArgumentRef'
             }, {
-              'name': 'labelname',
-              '_': 'ArgumentRef'
+              name: 'labelname',
+              _: 'ArgumentRef'
             }, {
-              'name': 'header',
-              '_': 'ArgumentRef'
+              name: 'header',
+              _: 'ArgumentRef'
             }, {
-              'name': 'producer',
-              '_': 'ArgumentRef'
+              name: 'producer',
+              _: 'ArgumentRef'
             }, {
-              'name': 'director',
-              '_': 'ArgumentRef'
+              name: 'director',
+              _: 'ArgumentRef'
             }]
           }, {
-            '_': 'ArgumentGroups',
-            '_children': [{
-              '_': 'Conflicts',
-              '_children': [{
-                'name': 'name',
-                '_': 'ArgumentRef'
+            _: 'ArgumentGroups',
+            _children: [{
+              _: 'Conflicts',
+              _children: [{
+                name: 'name',
+                _: 'ArgumentRef'
               }, {
-                'name': 'incname',
-                '_': 'ArgumentRef'
+                name: 'incname',
+                _: 'ArgumentRef'
               }]
             }, {
-              '_': 'Implies',
-              '_children': [{
-                'name': 'studioname',
-                '_': 'ArgumentRef'
+              _: 'Implies',
+              _children: [{
+                name: 'studioname',
+                _: 'ArgumentRef'
               }, {
-                'name': 'labelname',
-                '_': 'ArgumentRef'
+                name: 'labelname',
+                _: 'ArgumentRef'
               }]
             }, {
-              '_': 'Conflicts',
-              '_children': [{
-                'name': 'header',
-                '_': 'ArgumentRef'
+              _: 'Conflicts',
+              _children: [{
+                name: 'header',
+                _: 'ArgumentRef'
               }, {
-                'name': 'producer',
-                '_': 'ArgumentRef'
+                name: 'producer',
+                _: 'ArgumentRef'
               }, {
-                'name': 'director',
-                '_': 'ArgumentRef'
+                name: 'director',
+                _: 'ArgumentRef'
               }]
             }]
           }, {
-            '_': 'Arguments',
-            '_children': [{
-              'name': 'path',
-              '_': 'ArgumentRef'
+            _: 'Arguments',
+            _children: [{
+              name: 'path',
+              _: 'ArgumentRef'
             }, {
-              'name': 'filesys',
-              '_': 'ArgumentRef'
+              name: 'filesys',
+              _: 'ArgumentRef'
             }, {
-              'name': 'tree',
-              '_': 'ArgumentRef'
+              name: 'tree',
+              _: 'ArgumentRef'
             }]
           }],
-          'describe': 'Rename albums according to arguments specified (write).'
+          describe: 'Rename albums according to arguments specified (write).'
         }];
 
         const normalised = Builder.normaliseCommands(preNormalised, {
@@ -313,7 +313,7 @@
           );
 
           expect(R.where({
-            'ArgumentGroups': R.is(Array)
+            ArgumentGroups: R.is(Array)
           })(R.path(['_children'], firstNormalised))).to.be.true();
         } else {
           Helpers.logIfFailedStringify(false, firstNormalised);
@@ -348,7 +348,7 @@
         const renameCommand = commands[0];
 
         it('should: build a single command', () => {
-          const noOfCommands = renameCommand['_children'].length;
+          const noOfCommands = renameCommand._children.length;
           expect(noOfCommands).to.equal(1);
         });
 
@@ -462,7 +462,7 @@
 
         const renameCommand = commands[0];
         // console.log(`===> normalised rename COMMAND: ${JSON.stringify(renameCommand)}`);
-        const children = renameCommand['_children'];
+        const children = renameCommand._children;
 
         context('given: a rename command, inherits from 3 commands, ArgumentRefs and ArgumentGroups', () => {
           it('should: return an object with all properties populated.', () => {
