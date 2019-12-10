@@ -1,30 +1,28 @@
-
 const path = require('path');
 const webpack = require('webpack');
-const { getIfUtils } = require('webpack-config-utils');
-const nodeExternals = require('webpack-node-externals');
 
-module.exports = (env) => {
-  const {
-    ifProduction
-  } = getIfUtils(env);
-
+module.exports = env => {
+  const { getIfUtils } = require('webpack-config-utils');
+  const nodeExternals = require('webpack-node-externals');
+  const { ifProduction } = getIfUtils(env);
   const mode = ifProduction('production', 'development');
-  console.log('>>> Zenobia Webpack Environment mode: ' + env.mode);
 
+  console.log('>>> Zenobia Webpack Environment mode: ' + env.mode);
   return {
-    devtool: 'source-map',
-    entry: {
-      index: './lib/index.ts'
-    },
+    entry: ['./lib/index.ts'],
     target: 'node',
-    mode: mode,
     externals: [nodeExternals()],
+    mode: mode,
     module: {
       rules: [
         {
-          test: /\.ts(x?)$/,
-          use: 'ts-loader'
+          test: /\.tsx?$/,
+          use: [{
+            loader: 'ts-loader',
+            options: {
+              configFile: 'tsconfig.src.json'
+            }
+          }]
         },
         {
           test: /\.json$/,
