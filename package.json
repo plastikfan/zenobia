@@ -1,20 +1,109 @@
 {
   "name": "zenobia",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.0",
+  "description": "Regular expression based file management library",
   "main": "index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "clean": "rimraf dist/*",
+    "t": "mocha ./dist/zenobia-test-bundle.js",
+    "test": "npm audit --skip-unused && npm run t",
+    "build": "npm run build:d",
+    "build:d": "npm run clean && npm run __b:dev:src && npm run __b:dev:test",
+    "build:p": "npm run clean && npm run __b:prod:src && npm run __b:prod:test",
+    "__b:prod:src": "webpack -d --env.mode production --config webpack.config.src.js",
+    "__b:prod:test": "webpack -d --env.mode production --config webpack.config.test.js",
+    "__b:publish": "npm run clean && webpack -d --env.mode production --config webpack.config.src.js",
+    "__b:dev:src": "webpack -d --env.mode development --config webpack.config.src.js",
+    "__b:dev:test": "webpack -d --env.mode development --config webpack.config.test.js",
+    "exec": "node ./dist/zenobia-bundle.js",
+    "lint": "(npx semistandard --verbose | npx snazzy) && npx tslint -c tslint.json --project ./tsconfig.lint.json",
+    "fix": "npx semistandard --fix",
+    "watch": "npm run clean && webpack --watch --env.mode development --config webpack.config.src.js",
+    "watch:t": "npm run clean && webpack --watch --env.mode development --config webpack.config.test.js",
+    "audit": "npm audit --skip-unused",
+    "dep": "depcheck --ignores 'xpath,webpack-cli,sinon,@commitlint/cli,@commitlint/config-conventional,precommit-hook,shebang-loader,raw-loader'",
+    "check": "npm run audit && npm run dep && npm outdated --depth 0",
+    "validate": "npm run lint && npm run build:p && npm run t",
+    "cm": "npx git-cz",
+    "rep": "nyc report --reporter=lcov --reporter text summary",
+    "cov": "nyc mocha ./dist/zenobia-test-bundle.js",
+    "prepare": "echo '---> [STEP: prepare]:' && npm run __b:publish",
+    "prepublishOnly": "echo '---> [STEP: prepublishOnly]:' npm run build:p",
+    "preversion": "echo '---> [STEP: preversion]:' && npm run lint",
+    "version": "echo '---> [STEP: version]'",
+    "postversion": "echo '---> [STEP: postversion]'"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/plastikfan/zenobia.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "regex",
+    "xml",
+    "filesystem"
+  ],
+  "author": "plastikfan",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/plastikfan/zenobia/issues"
   },
-  "homepage": "https://github.com/plastikfan/zenobia#readme"
+  "homepage": "https://github.com/plastikfan/zenobia#readme",
+  "dependencies": {
+    "@types/node": "^12.12.14",
+    "@types/ramda": "^0.26.36",
+    "jaxine": "^2.0.1",
+    "ramda": "^0.26.1",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.3.3",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@types/chai": "^4.2.5",
+    "@types/dirty-chai": "^2.0.2",
+    "@types/mocha": "^5.2.7",
+    "@types/sinon": "^7.5.1",
+    "@types/sinon-chai": "^3.2.3",
+    "chai": "^4.2.0",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "depcheck": "^0.9.1",
+    "dirty-chai": "^2.0.1",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "precommit-hook": "^3.0.0",
+    "raw-loader": "^4.0.0",
+    "rimraf": "^3.0.0",
+    "semistandard": "^14.2.0",
+    "shebang-loader": "0.0.1",
+    "sinon": "^7.5.0",
+    "snazzy": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "tslint-config-semistandard": "^8.0.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-config-utils": "^2.3.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "semistandard": {
+    "env": [
+      "mocha"
+    ]
+  }
 }
