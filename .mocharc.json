@@ -1,0 +1,7 @@
+{
+  "full-trace": true,
+  "opts": false,
+  "require": ["ts-node/register", "source-map-support/register"],
+  "spec": ["tests/**/*.spec.ts", "tests/**/*.spec.js"],
+  "watch-files": ["lib/**/*.js", "tests/**/*.js"]
+}

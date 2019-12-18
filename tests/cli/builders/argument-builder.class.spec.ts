@@ -1,8 +1,8 @@
 
 import { expect, assert, use } from 'chai';
-import dirtyChai from 'dirty-chai';
+import dirtyChai = require('dirty-chai');
 use(dirtyChai);
-import * as Jaxom from 'jaxom';
+import * as Jaxom from 'jaxom-ts';
 // import * as R from 'ramda';
 // import * as xp from 'xpath-ts';
 // import 'xmldom-ts';

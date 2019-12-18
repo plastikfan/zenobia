@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+- node
+branches:
+  only:
+  - master
+  - develop
+notifications:
+  email:
+    recipients:
+    - plastikfan@zoho.com
+    on_success: never
+    on_failure: always
+after_success: npm run coveralls
+env:
+  global:
+    secure: Fh2r6NuemM91T9GP+S0m3HOZgynTAH3GuVPRDGGoIsxQz5qjxlwM9cbqJ5CFVjAMeC4vJfc/eRVDn9z1zsiFxu3smBrEB5k8Zb7bL9tXdr7Cj0YBrJKIOIJhgTmL9PMTUkCNLKsQbsNfzFhVrQ1wcOR/PO492KqaK3ZVY5w/oszVkGbFWjHheK6yTqBJuX7n/BQQON8pJPLKoDEB0nmku0NuJOX5dyC2ho4obav66PmyizO+sHwRPK75qckVx7Yd73kfY2S8MeOovi2LVLEZg9Wj9nHcyYwYPdWUGZv0YoosfxUWEQXwSeaLxra/zx9T3DHlmUAVLd0xRB/3W+uJYtkO42tMvqBinNxDNRJlBv/AIt7zDoXsdRM9EiYDVu3MPi2ENOwFSxonPWhNtg7Gzr6GPJRCMqUiTjKfBADk6AimS752yOHecF7KSvcLFHL15LWswEAf5WkVTsk2NHcYnTBhaJv/JK0NEVc4cRGyq6TTvIv41ALF8cYtaD90AbANX2j0qG3Cpl8DX6EsamE0Wnsz6VWEc4uDNaSp5Hefu8zjRjk+5tvTAd+oeoKODK9vaamjp3tfRRaiqVkrRA9JbvwQynJ6D63SGgtlV0GxUp2rR8V0YFGRK9GKlwog5u44JJv8U3gIkjIQtWukfi4BOJ8xD0Mog/pAjoc5n6c1+DA=

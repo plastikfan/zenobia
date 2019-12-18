@@ -1,4 +1,6 @@
-import datum from './app.zenobia.argument-builder.test.config.xml';
+// import datum from './app.zenobia.argument-builder.test.config.xml';
+/* tslint:disable:no-useless-escape */
+const datum = '<?xml version="1.0"?>';
 
 (function (data) {
   const chai = require('chai');
