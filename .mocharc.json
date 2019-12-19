@@ -3,5 +3,6 @@
   "opts": false,
   "require": ["ts-node/register", "source-map-support/register"],
   "spec": ["tests/**/*.spec.ts"],
-  "watch-files": ["lib/**/*.js", "tests/**/*.js"]
+  "watch-files": ["lib/**/*.ts", "tests/**/*.ts"],
+  "ui": "bdd"
 }
