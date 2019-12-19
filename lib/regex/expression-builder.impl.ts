@@ -1,10 +1,13 @@
+/// <reference path='../declarations.d.ts'/>
 
-const Jaxine = require('jaxine');
-const Select = require('../utils/xml/selection-utilities');
-const R = require('ramda');
+// tslint:disable: jsdoc-format
+
+import * as R from 'ramda';
+import * as Jaxine from 'jaxine';
 const defaultSpec = Jaxine.specs.default;
+import * as Select from '../utils/xml/selection-utilities';
 
-const buildOptions = {
+const buildOptions: any = {
   id: 'name',
   descendants: {
     by: 'index',
@@ -13,13 +16,13 @@ const buildOptions = {
   }
 };
 
-const expressionOptionsMap = {
+const expressionOptionsMap: any = {
   DEFAULT: { },
   Expression: { id: 'name' },
   Expressions: buildOptions
 };
 
-const getExpressionOptions = (el) => {
+export const getExpressionOptions = (el: string): {} => {
   return (expressionOptionsMap[el] || expressionOptionsMap.DEFAULT);
 };
 
@@ -57,14 +60,14 @@ const getExpressionOptions = (el) => {
    keyed by "field-type-expressions" and the value is a 'generic' object. The "_children"
    of the Expressions group are the individual regular expressions.
  */
-function buildExpressionGroup (parentNode, groupName, options) {
+export function buildExpressionGroup (parentNode: Node, groupName: string, options: any) {
   const { id = '' } = options;
 
   if (id !== '') {
     const expressionsGroupNode = Select.selectElementNodeById(
       'Expressions', id, groupName, parentNode);
 
-    const getOptions = (el) => {
+    const getOptions = (el: string): any => {
       return (el === 'Expressions') ? options : {};
     };
 
@@ -92,8 +95,8 @@ function buildExpressionGroup (parentNode, groupName, options) {
  *  - "id": attribute through which an element is identified (must be unique and
  *    normally defaults to "name")
  */
-function express (expressions, options) {
-
+export function express (expressions: any, options: any) {
+  return;
 }
 
 /**
@@ -133,7 +136,7 @@ function express (expressions, options) {
  *    - Regular expression built is not valid
  * @returns: a new version of expression with new fields populated
  */
-function evaluate (expressionName, expressions, previouslySeen = []) {
+export function evaluate (expressionName: string, expressions: any, previouslySeen = []): any {
   if (!expressionName) {
     throw new Error('Expression name not specified');
   }
@@ -147,7 +150,7 @@ function evaluate (expressionName, expressions, previouslySeen = []) {
     throw new Error(`Expression (${expressionId}="${expressionName}") not found`);
   }
   const expression = expressions[expressionName];
-  const patterns = R.filter((o) => R.equals(R.prop('_', o), 'Pattern'),
+  const patterns = R.filter((o: any) => R.equals(R.prop('_', o), 'Pattern'),
     R.prop(defaultSpec.labels.descendants, expression));
 
   if (R.isEmpty(patterns)) {
@@ -158,20 +161,21 @@ function evaluate (expressionName, expressions, previouslySeen = []) {
 
   // Build the regular expression text
   //
-  const expressionText = R.reduce((acc, pattern) => {
+  const expressionText = R.reduce((acc: string, pattern: any) => {
     const text = R.cond([
       [R.both(R.has(textLabel), R.has('link')), () => {
         throw new Error(`Expression (${expressionId}="${expressionName}"), contains a Pattern with both a link and text`);
       }],
       [R.has(textLabel), R.prop(textLabel)],
-      [R.has('link'), (o) => {
-        const link = R.prop('link', o);
+      [R.has('link'), (o: any): string => {
+        const link: string = R.prop('link', o) || '';
         if (R.includes(link, previouslySeen)) {
           throw new Error(`Circular reference detected, element '${link}', has already been encountered.`);
         }
 
-        const linkedExpression = evaluate(link, expressions, R.append(expressionName, previouslySeen));
-        const linkedText = R.prop('$regexp', linkedExpression).source;
+        const p = R.append(expressionName, previouslySeen) as any; // cast away never ???
+        const linkedExpression: any = evaluate(link, expressions, p);
+        const linkedText: any = R.prop('$regexp', linkedExpression).source;
         return linkedText;
       }],
       [R.T, () => {
@@ -194,11 +198,17 @@ function evaluate (expressionName, expressions, previouslySeen = []) {
   // attribute). Named capturing groups of the form: ?<groupName>
   //
   const captureGroupsRegExp = new RegExp('\\?<(?<captureGroup>[a-zA-Z]+)>', 'g');
-  let captures = [];
-  let capture;
-  while ((capture = captureGroupsRegExp.exec(expressionText)) !== null) {
-    captures = R.append(capture.groups.captureGroup, captures);
+  let captures: any = [];
+  let capture: RegExpExecArray | null;
+
+  do {
+    capture = captureGroupsRegExp.exec(expressionText);
+
+    if (capture !== null) {
+      captures = R.append(capture?.groups?.captureGroup, captures);
+    }
   }
+  while (capture !== null);
 
   if (!R.isEmpty(captures)) {
     updatedExpression = R.set(R.lensProp('$namedGroups'), captures)(updatedExpression);
@@ -217,7 +227,7 @@ function evaluate (expressionName, expressions, previouslySeen = []) {
     //
     const egPatterns = R.filter(R.has('eg'))(patterns);
 
-    const egText = R.reduce((acc, pattern) => {
+    const egText = R.reduce((acc: string, pattern: any) => {
       const text = R.prop('eg')(pattern);
       return acc + text;
     }, '')(egPatterns);
@@ -227,10 +237,3 @@ function evaluate (expressionName, expressions, previouslySeen = []) {
   }
   return updatedExpression;
 }
-
-module.exports = {
-  buildExpressionGroup: buildExpressionGroup,
-  express: express,
-  evaluate: evaluate,
-  getExpressionOptions: getExpressionOptions
-};

@@ -7,7 +7,7 @@ module.exports = env => {
   const { ifProduction } = getIfUtils(env);
   const mode = ifProduction('production', 'development');
 
-  console.log('>>> Zenobia Webpack Environment mode: ' + env.mode);
+  console.log('>>> Zenobia Test Webpack Environment mode: ' + env.mode);
 
   return {
     mode: mode,
@@ -18,7 +18,14 @@ module.exports = env => {
       rules: [
         {
           test: /\.xml$/i,
-          use: 'raw-loader'
+          use: [
+            {
+              loader: 'raw-loader',
+              options: {
+                esModule: false
+              }
+            }
+          ]
         },
         {
           test: /\.tsx?$/,

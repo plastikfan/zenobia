@@ -3,7 +3,9 @@
   "compilerOptions": {
     "types": [
       "mocha",
-      "node"
+      "node",
+      "ramda",
+      "xmldom"
     ],
   },
   "include": [

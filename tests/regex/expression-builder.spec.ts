@@ -1,19 +1,24 @@
 /* eslint-disable no-useless-escape */
 
-(function () {
-  const chai = require('chai');
-  chai.use(require('dirty-chai'));
-  const expect = chai.expect;
-  const assert = chai.assert;
-  const DOMParser = require('xmldom').DOMParser;
-  const parser = new DOMParser();
-  const XHelpers = require('../helpers/xml-test-helpers');
-  const Builder = require('../../lib/regex/expression-builder');
+import { expect, assert, use } from 'chai';
+import dirtyChai = require('dirty-chai');
+use(dirtyChai);
+import * as xpath from 'xpath';
+import { DOMParser } from 'xmldom';
+const parser = new DOMParser();
 
-  describe('Expression builder', () => {
-    context('Expression', () => {
-      context('Error handling', () => { // Expression:
-        const tests = [{
+import * as Builder from '../../lib/regex/expression-builder';
+
+describe('Expression builder', () => {
+  context('Expression', () => {
+    context('Error handling', () => { // Expression:
+      interface IUnitTestInfo {
+        given: string;
+        data: string;
+      }
+
+      const tests: IUnitTestInfo[] = [
+        {
           given: 'Expression defined within Expressions with duplicated entry',
           data: `<?xml version="1.0"?>
             <Application name="pez">
@@ -89,23 +94,22 @@
             </Application>`
         }];
 
-        tests.forEach((t) => {
-          context(`given: ${t.given}`, () => {
-            it('should: throw', () => {
-              const document = parser.parseFromString(t.data);
-              const applicationNode = XHelpers.selectFirst('/Application', document);
+      tests.forEach((t: IUnitTestInfo) => {
+        context(`given: ${t.given}`, () => {
+          it('should: throw', () => {
+            const document = parser.parseFromString(t.data);
+            const applicationNode = xpath.select('/Application', document, true);
 
-              if (applicationNode) {
-                expect(() => {
-                  Builder.buildExpressions(applicationNode);
-                }).to.throw();
-              } else {
-                assert.fail('Couldn\'t get Application node.');
-              }
-            });
+            if (applicationNode instanceof Node) {
+              expect(() => {
+                Builder.buildExpressions(applicationNode);
+              }).to.throw();
+            } else {
+              assert.fail('Couldn\'t get Application node.');
+            }
           });
         });
       });
-    }); // Expression
-  }); // Expression builder
-})();
+    });
+  }); // Expression
+}); // Expression builder

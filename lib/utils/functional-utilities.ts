@@ -1,5 +1,5 @@
 
-const R = require('ramda');
+import * as R from 'ramda';
 
 /**
  * @function transformEach
@@ -13,9 +13,9 @@ const R = require('ramda');
  * @returns {Object} An map object whose keys are the elements of the input array and values are
  *    the result of transforming the input using the transformer function passed in.
  */
-function transformEach (transform) {
-  return R.reduce((acc, val) => {
-    const o = {};
+export function transformEach (transform: (val: any) => any) {
+  return R.reduce((acc: any, val: any) => {
+    const o: any = {};
     o[val] = transform(val);
     return Object.assign(acc, o);
   }, {});
@@ -32,14 +32,9 @@ function transformEach (transform) {
  * @returns {Object} An map object whose keys are the elements of the input array and values are
  *    the result of transforming the input using the transformer function passed in.
  */
-function transformEachSpread (transform) {
-  return R.reduce((acc, val) => ({
+export function transformEachSpread (transform: (val: any) => any) {
+  return R.reduce((acc: any, val: any) => ({
     ...acc,
     [val]: transform(val)
   }), {});
 }
-
-module.exports = {
-  transformEach: R.curry(transformEach),
-  transformEachSpread: transformEachSpread
-};

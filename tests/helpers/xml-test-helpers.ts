@@ -14,29 +14,8 @@ const xpath = require('xpath');
 // selectElementNodeById('Expression', 'name', 'person\'s-name-expression', <node>)
 // Typically, the elementName ('Expression') can be accessed by node.nodeName
 //
-function selectElementNodeById (elementName, id, name, parentNode) {
-  const elementResult = xpath.select(`.//${elementName}[@${id}="${name}"]`, parentNode) || {};
-  let elementNode = {};
-
-  if (elementResult && elementResult.length > 0) {
-    elementNode = elementResult[0];
-  }
+export function selectElementNodeById (elementName: string, id: string, name: string, parentNode: Node) {
+  const elementNode = xpath.select(`.//${elementName}[@${id}="${name}"]`, parentNode, true);
 
   return elementNode;
 }
-
-function selectFirst (query, documentNode) {
-  const selectionResult = xpath.select(query, documentNode) || {};
-
-  if (selectionResult.length && selectionResult.length > 0) {
-    const firstNode = selectionResult[0];
-    return firstNode;
-  }
-
-  return null;
-}
-
-module.exports = {
-  selectFirst: selectFirst,
-  selectElementNodeById: selectElementNodeById
-};

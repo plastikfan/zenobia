@@ -1,17 +1,21 @@
+/// <reference path='../../declarations.d.ts'/>
 
-const xpath = require('xpath');
-const R = require('ramda');
-const Jaxine = require('jaxine');
-const Select = require('../../utils/xml/selection-utilities');
-const defaultSpec = Jaxine.specs.default;
+// tslint:disable: jsdoc-format
 
-const indexByAndThrows = {
+import * as xpath from 'xpath';
+import * as R from 'ramda';
+import * as Jaxine from 'jaxine';
+import * as Select from '../../utils/xml/selection-utilities';
+
+const defaultSpec: any = Jaxine.specs.default;
+
+const indexByAndThrows: any = {
   by: 'index',
   throwIfCollision: false,
   throwIfMissing: false
 };
 
-const commandOptionsMap = {
+const commandOptionsMap: any = {
   DEFAULT: {
     id: 'name'
   },
@@ -23,7 +27,7 @@ const commandOptionsMap = {
   }
 };
 
-const getCommandOptions = (el) => {
+const getCommandOptions = (el: string): {} => {
   return (commandOptionsMap[el] || commandOptionsMap.DEFAULT);
 };
 
@@ -63,8 +67,8 @@ const getCommandOptions = (el) => {
          }, {
   ...]
  */
-function buildNamedCommand (commandName, commandsNode) {
-  const commandNode = Select.selectElementNodeById('Command', 'name', commandName, commandsNode);
+export function buildNamedCommand (commandName: string, commandsNode: Node) {
+  const commandNode: {} = Select.selectElementNodeById('Command', 'name', commandName, commandsNode);
 
   if (commandNode || commandNode !== {}) {
     let element = Jaxine.buildElement(commandNode, commandsNode, getCommandOptions);
@@ -112,17 +116,17 @@ function buildNamedCommand (commandName, commandsNode) {
            }]
          }, {
  */
-function buildCommands (commandsNode) {
-  const concreteCommands = xpath.select(
+export function buildCommands (commandsNode: Node): any {
+  const concreteCommands: any = xpath.select(
     './/Command[not(@abstract)]',
     commandsNode
-  ) || {};
+  );
 
   if (concreteCommands.length === 0) {
     throw new Error('Bad configuration: No Commands found');
   }
 
-  const commands = R.map((cmdNode) => {
+  const commands = R.map((cmdNode: Node) => {
     return postBuildCommand(Jaxine.buildElement(cmdNode, commandsNode, getCommandOptions));
   }, concreteCommands);
 
@@ -137,8 +141,8 @@ function buildCommands (commandsNode) {
  * @returns {Object} in a pre normalised form, ie, it still needs to be normalised
  *    via normaliseCommands.
  */
-function postBuildCommand (element) {
-  const options = getCommandOptions('Command');
+function postBuildCommand (element: any) {
+  const options: any = getCommandOptions('Command');
 
   // Transform the @inherits attribute from a csv into an array
   //
@@ -195,8 +199,8 @@ function postBuildCommand (element) {
      ...
  * @returns
  */
-function normaliseCommands (commands, info) {
-  return R.map((command) => normaliseCommand(command, info), commands);
+export function normaliseCommands (commands: any[], info: any) {
+  return R.map((command: any) => normaliseCommand(command, info), commands);
 }
 
 /**
@@ -273,7 +277,7 @@ function normaliseCommands (commands, info) {
          'describe': 'update existing'
        },
  */
-function normaliseCommand (command, info) {
+function normaliseCommand (command: any, info: any) {
   const normalisedCommand = normaliseChildren(command);
   const commandWithResolvedArguments = resolveArguments(normalisedCommand, info);
 
@@ -316,22 +320,22 @@ function normaliseCommand (command, info) {
          }, {
       ...
  */
-function normaliseChildren (command) {
-  const groupByElement = R.groupBy((child) => {
+function normaliseChildren (command: any) {
+  const groupByElement = R.groupBy((child: any) => {
     return child[defaultSpec.labels.element];
   });
 
-  const reduceByChildren = R.reduce((acc, value) => {
+  const reduceByChildren: any = R.reduce((acc: [], value: any) => {
     return R.concat(acc, value[defaultSpec.labels.descendants]);
   }, []);
 
-  const normalisedCommand = R.omit([defaultSpec.labels.descendants], command);
+  const normalisedCommand: any = R.omit([defaultSpec.labels.descendants], command);
 
   const children = command[defaultSpec.labels.descendants];
   const renameGroupByElementChildrenObj = groupByElement(children);
-  const adaptedChildren = {};
+  const adaptedChildren: any = {};
 
-  R.forEachObjIndexed((value, key) => {
+  R.forEachObjIndexed((value: any, key: string) => {
     if (!R.includes(key, R.keys(adaptedChildren))) {
       adaptedChildren[key] = reduceByChildren(value);
     } else {
@@ -389,8 +393,8 @@ function normaliseChildren (command) {
          }, {
   ...
  */
-function resolveArguments (command, info) {
-  const { commandArguments } = info;
+function resolveArguments (command: any, info: any) {
+  const { commandArguments = {} } = info;
   const argumentDefsChildren = commandArguments[defaultSpec.labels.descendants];
 
   if (R.is(Object, R.prop(defaultSpec.labels.descendants)(command))) {
@@ -401,8 +405,8 @@ function resolveArguments (command, info) {
 
       // We can't use R.map, because we lose out on our index-ability (R.map yields an array!)
       //
-      const resolved = {};
-      R.forEach((argRef) => {
+      const resolved: any = {};
+      R.forEach((argRef: any) => {
         if (argRef.name && R.includes(argRef.name, R.keys(argumentDefsChildren))) {
           // Now merge the Ref with the Def, where the Def takes precedence and
           // ensuring that the element type '_' is changed from "ArgumentRef" to
@@ -417,7 +421,7 @@ function resolveArguments (command, info) {
       const resolvedValues = R.values(resolved);
       const argRefValues = R.values(argumentRefs);
 
-      const joined = R.innerJoin((res, argsRef) => res.name === argsRef.name,
+      const joined = R.innerJoin((res: any, argsRef: any) => res.name === argsRef.name,
         resolvedValues, argRefValues);
 
       if (joined.length === R.keys(resolved).length) {
@@ -438,9 +442,3 @@ function resolveArguments (command, info) {
 
   return command;
 }
-
-module.exports = {
-  buildNamedCommand: buildNamedCommand,
-  buildCommands: buildCommands,
-  normaliseCommands: normaliseCommands
-};

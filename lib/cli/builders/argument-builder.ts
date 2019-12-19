@@ -1,5 +1,7 @@
 
-const Jaxine = require('jaxine');
+/// <reference path='../../declarations.d.ts'/>
+
+import * as Jaxine from 'jaxine';
 
 const buildOptions = {
   id: 'name',
@@ -10,7 +12,7 @@ const buildOptions = {
   }
 };
 
-const argumentOptionsMap = {
+const argumentOptionsMap: any = {
   DEFAULT: {},
   Argument: {
     id: 'name'
@@ -18,7 +20,7 @@ const argumentOptionsMap = {
   Arguments: buildOptions
 };
 
-const getArgumentOptions = (el) => {
+const getArgumentOptions = (el: string): {} => {
   return (argumentOptionsMap[el] || argumentOptionsMap.DEFAULT);
 };
 
@@ -31,13 +33,9 @@ const getArgumentOptions = (el) => {
  * @returns a native object representing all Argument definitions available for use by
  *    the commands defined in config.
  */
-function buildArguments (argumentsNode) {
+export function buildArguments (argumentsNode: Node) {
   const parentNode = argumentsNode.parentNode;
   const argumentNodes = Jaxine.buildElement(argumentsNode, parentNode, getArgumentOptions);
 
   return argumentNodes;
 }
-
-module.exports = {
-  buildArguments: buildArguments
-};

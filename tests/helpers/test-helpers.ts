@@ -1,5 +1,5 @@
 
-function logIfFailed (result, widget) {
+export function logIfFailed (result: boolean, widget: any): boolean {
   if (!result) {
     console.log(`FAILURE!: ${widget}!`);
   }
@@ -7,7 +7,7 @@ function logIfFailed (result, widget) {
   return result;
 }
 
-function logIfFailedStringify (result, widget) {
+export function logIfFailedStringify (result: boolean, widget: any): boolean {
   if (!result) {
     console.log(`FAILURE!: ${JSON.stringify(widget)}`);
   }
@@ -15,11 +15,16 @@ function logIfFailedStringify (result, widget) {
   return result;
 }
 
+export type ArrayLike = {
+  length: number;
+  [key: number]: any
+};
+
 // https://stackoverflow.com/questions/152483/is-there-a-way-to-print-all-methods-of-an-object-in-javascript
 //
-function getMethods (obj) {
-  var result = [];
-  for (var id in obj) {
+export function getMethods (obj: any): ArrayLike {
+  let result = [];
+  for (let id in obj) {
     try {
       if (typeof (obj[id]) === 'function') {
         result.push(id + ': ' + obj[id].toString());
@@ -33,9 +38,9 @@ function getMethods (obj) {
   return result;
 }
 
-function getEverything (obj) {
-  var result = [];
-  for (var id in obj) {
+export function getEverything (obj: any): ArrayLike {
+  let result = [];
+  for (let id in obj) {
     try {
       result.push(id + ': ' + obj[id].toString());
       if (typeof (obj[id]) === 'function') {
@@ -49,10 +54,3 @@ function getEverything (obj) {
   }
   return result;
 }
-
-module.exports = {
-  logIfFailed: logIfFailed,
-  logIfFailedStringify: logIfFailedStringify,
-  getMethods: getMethods,
-  getEverything: getEverything
-};

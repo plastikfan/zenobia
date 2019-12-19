@@ -1,8 +1,12 @@
+/// <reference path='../declarations.d.ts'/>
 
-const xpath = require('xpath');
-const R = require('ramda');
-const Impl = require('./expression-builder.impl');
-const defaultSpec = require('jaxine').specs.default;
+// tslint:disable: jsdoc-format
+
+import * as xpath from 'xpath';
+import * as R from 'ramda';
+import * as Impl from './expression-builder.impl';
+import * as Jaxine from 'jaxine';
+const defaultSpec = Jaxine.specs.default;
 
 /**
  * @function: buildExpressions
@@ -33,16 +37,15 @@ const defaultSpec = require('jaxine').specs.default;
    of the Expressions group are the individual regular expressions and are contained inside
    an array.
  */
-function buildExpressions (parentNode) {
-  const expressionsOptions = Impl.getExpressionOptions('Expressions');
+export function buildExpressions (parentNode: Node) {
+  const expressionsOptions: any = Impl.getExpressionOptions('Expressions');
   if (!expressionsOptions) {
     throw new Error('Couldn\'t get options for "Expressions" element');
   }
   const { id = '' } = expressionsOptions;
-
   validateId(parentNode, ['Expression', 'Expressions'], Impl.getExpressionOptions);
 
-  const expressionGroupNodes = xpath.select(
+  const expressionGroupNodes: any = xpath.select(
     `.//Expressions[@${id}]`,
     parentNode
   );
@@ -51,11 +54,11 @@ function buildExpressions (parentNode) {
     throw new Error('Bad configuration: No <Expressions>s found');
   }
 
-  const expressionGroups = {};
+  const expressionGroups: any = {};
 
-  R.forEach((groupNode) => {
-    const groupName = groupNode.getAttribute(id);
-    const group = Impl.buildExpressionGroup(parentNode, groupName, expressionsOptions);
+  R.forEach((groupNode: Element) => {
+    const groupName: string = groupNode.getAttribute(id) || '';
+    const group: any = Impl.buildExpressionGroup(parentNode, groupName, expressionsOptions);
 
     if (!R.includes(groupName, R.keys(expressionGroups))) {
       expressionGroups[groupName] = group;
@@ -78,26 +81,26 @@ function buildExpressions (parentNode) {
  *    options ("id", "recurse", "discards").
  * @throws: if id anomaly is found
  */
-function validateId (parentNode, elementNames, getOptions) {
+function validateId (parentNode: Node, elementNames: string[], getOptions: (el: string) => any) {
   if (elementNames.length && elementNames.length > 0) {
-    elementNames.forEach((elementName) => {
-      const options = getOptions(elementName);
+    elementNames.forEach((elementName: string) => {
+      const options: any = getOptions(elementName);
       const {
         id = ''
       } = options;
 
       if (id !== '') {
-        const elementsWithoutIdResult = xpath.select(`.//${elementName}[not(@${id})]`, parentNode);
+        const elementsWithoutIdResult: any = xpath.select(`.//${elementName}[not(@${id})]`, parentNode);
 
         if (elementsWithoutIdResult.length > 0) {
           const first = elementsWithoutIdResult[0];
           throw new Error(`Found at least 1 ${elementName} without ${id} attribute, first: ${first}`);
         }
 
-        const elementsWithEmptyIdResult = xpath.select(`.//${elementName}[@${id}=""]`, parentNode);
+        const elementsWithEmptyIdResult: any = xpath.select(`.//${elementName}[@${id}=""]`, parentNode);
 
         if (elementsWithEmptyIdResult.length > 0) {
-          const first = elementsWithEmptyIdResult[0];
+          const first: string = elementsWithEmptyIdResult[0];
           throw new Error(`Found at least 1 ${elementName} with empty ${id} attribute, first: ${first}`);
         }
       } else {
@@ -126,7 +129,7 @@ function validateId (parentNode, elementNames, getOptions) {
  * @returns {Object}: Representing normalised expressions which is simply a map object,
  *    from regular expression name to the regular expression object (not regex!).
  */
-function normalise (expressionGroups, getOptions) {
+function normalise (expressionGroups: any, getOptions: (el: string) => any) {
   const expressionId = getOptions('Expression').id;
   if (!expressionId) {
     throw new Error('No identifier found for Expression');
@@ -137,30 +140,26 @@ function normalise (expressionGroups, getOptions) {
   // have no need to for the sub-group structure, so effectively what we need t do is combine
   // several map objects into one and detecting any potential collisions.
   //
-  const combinedExpressionGroupsMap = R.reduce((combinedAcc, groupName) => {
+  const combinedExpressionGroupsMap = R.reduce((combinedAcc: any, groupName: string) => {
     const expressions = R.prop(defaultSpec.labels.descendants, expressionGroups[groupName]);
     const alreadyDefined = R.intersection(R.keys(expressions), R.keys(combinedAcc));
     if (!R.isEmpty(alreadyDefined)) {
       throw new Error(`These expressions have already been defined: "${R.join(', ', alreadyDefined)}"`);
     }
 
-    const expressionsForThisGroupMap = R.reduce((thisGroupAcc, exprName) => {
+    const expressionsForThisGroupMap = R.reduce((thisGroupAcc: any, exprName: string) => {
       if (R.includes(exprName, R.keys(thisGroupAcc))) {
         throw new Error(`Expression: '${exprName}' already defined`);
       }
       thisGroupAcc[exprName] = expressions[exprName];
       return thisGroupAcc;
-    }, {})(R.keys(R.prop(defaultSpec.labels.descendants, expressionGroups[groupName])));
+    }, {})(R.keys(R.prop(defaultSpec.labels.descendants, expressionGroups[groupName])) as string[]);
 
     return R.mergeAll([combinedAcc, expressionsForThisGroupMap]);
-  }, {})(R.keys(expressionGroups));
+  }, {})(R.keys(expressionGroups) as string[]);
 
   return combinedExpressionGroupsMap;
 }
-
-module.exports = {
-  buildExpressions: buildExpressions
-};
 
 // const DATA = `<?xml version="1.0"?>
 //   <Application name="pez">

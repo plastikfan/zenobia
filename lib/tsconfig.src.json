@@ -2,7 +2,9 @@
   "extends": "../tsconfig.base",
   "compilerOptions": {
     "types": [
-      "node"
+      "node",
+      "ramda",
+      "xmldom"
     ],
   },
   "include": [
