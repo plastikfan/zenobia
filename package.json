@@ -57,7 +57,7 @@
     "@types/ramda": "^0.26.36",
     "jaxine": "^2.0.1",
     "ramda": "^0.26.1",
-    "xmldom": "^0.1.27",
+    "xmldom": "^0.5.0",
     "xpath": "0.0.27"
   },
   "devDependencies": {
